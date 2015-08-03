@@ -126,6 +126,7 @@
     
     leftBackgroundView.frame = CGRectMake(0, 0, frame.origin.x, self.view.frame.size.height);
     rightBackgroundView.frame = CGRectMake(frame.size.width + frame.origin.x, 0, self.view.frame.size.width - frame.size.width - frame.origin.x, self.view.frame.size.height);
+
     
     topBackgroundView.frame = CGRectMake(frame.origin.x, 0, frame.size.width, frame.origin.y);
     bottomBackgroundView.frame = CGRectMake(frame.origin.x, frame.size.height + frame.origin.y, frame.size.width, self.view.frame.size.height);
@@ -184,7 +185,19 @@
     if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
         [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
             [self setContainerFrame:CGRectMake(0, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
-            [self setBackgroundViewsAlpha:self.frostedViewController.backgroundFadeAmount];
+            [self setBackgroundViewsAlpha:0.5f];
+            if ( [[self frostedViewController] currentViewController] && ![[[[self frostedViewController] currentViewController] navigationController] isNavigationBarHidden]) {
+                [[[[self frostedViewController] currentViewController] navigationController] setNavigationBarHidden:YES animated:YES];
+                UIView *backgroundContentView = [[[self frostedViewController] currentViewController] view];
+                [backgroundContentView.layer removeAllAnimations];
+                CABasicAnimation *scale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                [scale setFromValue:[NSNumber numberWithFloat:1.0f]];
+                [scale setToValue:[NSNumber numberWithFloat:0.9f]];
+                [scale setDuration:self.frostedViewController.animationDuration];
+                [scale setRemovedOnCompletion:NO];
+                [scale setFillMode:kCAFillModeForwards];
+                [backgroundContentView.layer addAnimation:scale forKey:@"transformScale"];
+            }
         } completion:completionHandler];
     }
     
@@ -234,6 +247,18 @@
         [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
             [self setContainerFrame:CGRectMake(- self.frostedViewController.calculatedMenuViewSize.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
             [self setBackgroundViewsAlpha:0];
+            if ( [[self frostedViewController] currentViewController] && [[[[self frostedViewController] currentViewController] navigationController] isNavigationBarHidden]) {
+                [[[[self frostedViewController] currentViewController] navigationController] setNavigationBarHidden:NO animated:YES];
+                UIView *backgroundContentView = [[[self frostedViewController] currentViewController] view];
+                [backgroundContentView.layer removeAllAnimations];
+                CABasicAnimation *scale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                [scale setFromValue:[NSNumber numberWithFloat:0.9f]];
+                [scale setToValue:[NSNumber numberWithFloat:1.0f]];
+                [scale setDuration:self.frostedViewController.animationDuration];
+                [scale setRemovedOnCompletion:NO];
+                [scale setFillMode:kCAFillModeForwards];
+                [backgroundContentView.layer addAnimation:scale forKey:@"transformScale"];
+            }
         } completion:^(BOOL finished) {
             self.frostedViewController.visible = NO;
             [self.frostedViewController re_hideController:self];

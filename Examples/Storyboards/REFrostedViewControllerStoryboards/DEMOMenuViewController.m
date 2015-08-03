@@ -52,6 +52,11 @@
         [view addSubview:label];
         view;
     });
+    
+    DEMONavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+    DEMOHomeViewController *homeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"homeController"];
+    navigationController.viewControllers = @[homeViewController];
+    self.frostedViewController.currentViewController = (UIViewController *)homeViewController;
 }
 
 #pragma mark -
@@ -98,13 +103,17 @@
     
     if (indexPath.section == 0 && indexPath.row == 0) {
         DEMOHomeViewController *homeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"homeController"];
-        navigationController.viewControllers = @[homeViewController];
+        [navigationController setViewControllers:@[homeViewController] animated:YES];
+        self.frostedViewController.currentViewController = (UIViewController *)homeViewController;
     } else {
         DEMOSecondViewController *secondViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondController"];
-        navigationController.viewControllers = @[secondViewController];
+        [navigationController setViewControllers:@[secondViewController] animated:YES];
+        self.frostedViewController.currentViewController = (UIViewController *)secondViewController;
     }
+
     
     self.frostedViewController.contentViewController = navigationController;
+    
     [self.frostedViewController hideMenuViewController];
 }
 
