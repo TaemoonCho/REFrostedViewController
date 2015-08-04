@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, REFrostedViewControllerLiveBackgroundStyle) {
 @property (assign, readwrite, nonatomic) BOOL liveBlur; // iOS 7 only
 @property (assign, readwrite, nonatomic) REFrostedViewControllerLiveBackgroundStyle liveBlurBackgroundStyle; // iOS 7 only
 
-@property (assign, readwrite, nonatomic) UIViewController *currentViewController;
+@property (strong, readwrite, nonatomic) UIViewController *currentViewController;
 
 @property (weak, readwrite, nonatomic) id<REFrostedViewControllerDelegate> delegate;
 @property (strong, readwrite, nonatomic) UIViewController *contentViewController;

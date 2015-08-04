@@ -161,8 +161,8 @@
         [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
             [self setContainerFrame:CGRectMake(0, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
             [self setBackgroundViewsAlpha:0.5f];
-            if ( [[self frostedViewController] currentViewController] && ![[[[self frostedViewController] currentViewController] navigationController] isNavigationBarHidden]) {
-                [[[[self frostedViewController] currentViewController] navigationController] setNavigationBarHidden:YES animated:YES];
+            if ( [[self frostedViewController] currentViewController] && [self.frostedViewController.contentViewController isKindOfClass:[UINavigationController class]]) {
+                [(UINavigationController *)self.frostedViewController.contentViewController setNavigationBarHidden:YES animated:YES];
                 UIView *backgroundContentView = [[[self frostedViewController] currentViewController] view];
                 [backgroundContentView.layer removeAllAnimations];
                 CABasicAnimation *scale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
@@ -222,8 +222,8 @@
         [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
             [self setContainerFrame:CGRectMake(- self.frostedViewController.calculatedMenuViewSize.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
             [self setBackgroundViewsAlpha:0];
-            if ( [[self frostedViewController] currentViewController] && [[[[self frostedViewController] currentViewController] navigationController] isNavigationBarHidden]) {
-                [[[[self frostedViewController] currentViewController] navigationController] setNavigationBarHidden:NO animated:YES];
+            if ( [[self frostedViewController] currentViewController] && [self.frostedViewController.contentViewController isKindOfClass:[UINavigationController class]]) {
+                [(UINavigationController *)self.frostedViewController.contentViewController setNavigationBarHidden:NO animated:YES];
                 UIView *backgroundContentView = [[[self frostedViewController] currentViewController] view];
                 [backgroundContentView.layer removeAllAnimations];
                 CABasicAnimation *scale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
